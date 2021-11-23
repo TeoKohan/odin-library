@@ -4,11 +4,62 @@
         <title>Library</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="./style.css">
-        <script src="./script.js"></script>
+        <script src="./script.js" defer></script>
     </head>
+    
     <body>
+
+        <div class="modal">
+            <form method="post" id="newbook">
+                <div class="header">Add New Book</div>
+                <div class="fields">
+                    <div class="field">
+                        <label for="title" required>Title:</label>
+                        <input type="text" name="title" placeholder="Enter the books title">
+                        <small></small>
+                    </div>
+                    <div class="field">
+                        <label for="author" required>Author:</label>
+                        <input type="text" name="author" placeholder="Enter the books author">
+                        <small></small>
+                    </div>
+                    <div class="field">
+                        <label for="pages"  required>Pages:</label>
+                        <input type="text" name="pages" placeholder="Enter the amount of pages">
+                        <small></small>
+                    </div>
+                    <div class="field">
+                        <label for="read"   required>Read:</label>
+                        <input type="checkbox" name="read">
+                        <small></small>
+                    </div>
+                </div>
+                <input type="submit" value="Add Book"></input>
+            </form>
+        </div>
+
+        <div class="content">
+            <div class="library">
+                <div class="cards">
+                    <button class="card" id="add"><div>Add book</div></button>
+                </div>
+            </div>
+            <div class="sidebar">
+                <div class="counters">
+                    <div class="info">
+                        <div class="label">Books Added:</div><div class="books"></div>
+                    </div>
+                    <div class="info">
+                        <div class="label">Pages Read:</div><div class="pages"></div>
+                    </div>
+                    <div class="info">
+                        <div class="label">Books Read:</div><div class="read"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div>Library</div>
+        </footer>
     </body>
-    <footer>
-        <div>Library</div>
-    </footer>
 </html>
