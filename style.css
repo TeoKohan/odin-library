@@ -91,6 +91,7 @@ form input[type="submit"] {
 }
 
 small {
+    height: 16px;
     color: red;
 }
 

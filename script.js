@@ -1,24 +1,34 @@
-function Book(title, author, pages, read) {
-    this.title = title,
-    this.author = author,
-    this.pages = pages,
-    this.read = read
-};
+class Book {
+    constructor (title, author, pages, read) {
+        this.title = title,
+        this.author = author,
+        this.pages = pages,
+        this.read = read
+    }
 
-let frog = new Book('The frog prince and the mysterious ring', 'Armand Timotheus', 32, true);
-let owl = new Book('The white owl', 'Frank', 243, false);
-let bear = new Book('Bearhug', 'Martha', 143, false);
-let fox = new Book('Between two brows', 'Timothy', 1043, true);
+    toggle_read() {
+        this.read = !this.read;
+    }
 
-let books = [frog, owl, bear, fox];
+    is_read() {
+        return this.read;
+    }
+}
+
+let frog = new Book('The frog prince and the mysterious ring', 'Armand Timotheus', 32,   true);
+let owl  = new Book('The white owl',                           'Frank',            243,  false);
+let bear = new Book('Bearhug',                                 'Martha',           143,  false);
+let fox  = new Book('Between two brows',                       'Timothy',          1043, true);
+
+let books   = [frog, owl, bear, fox];
 let library = [];
 
 const card_container = document.querySelector('.cards');
-const counter_books = document.querySelector('.counters .books');
-const counter_pages = document.querySelector('.counters .pages');
-const counter_read = document.querySelector('.counters .read');
+const counter_books  = document.querySelector('.counters .books');
+const counter_pages  = document.querySelector('.counters .pages');
+const counter_read   = document.querySelector('.counters .read');
 
-function Card(B, I) {
+function Card(B) {
     let card = document.createElement('div');
     card.classList.add('card');
     let header = document.createElement('header');
@@ -53,7 +63,7 @@ function Card(B, I) {
 
     let checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.checked = B.read;
+    checkbox.checked = B.is_read();
     let slider = document.createElement('span');
     slider.classList.add('slider');
 
@@ -85,14 +95,11 @@ function Card(B, I) {
 
 function update() {
     counter_books.textContent = library.length;
-    counter_pages.textContent = library.reduce((pages, book) => pages + (book.read ? book.pages : 0), 0);
-    counter_read.textContent  = library.reduce((pages, book) => pages + (book.read ? 1 : 0), 0);
+    counter_pages.textContent = library.reduce((pages, book) => pages + (book.is_read() ? book.pages : 0), 0);
+    counter_read.textContent  = library.reduce((read,  book) => read  + (book.is_read() ? 1 : 0), 0);
 }
 
-function toggle_read(b) {
-    b.read = !b.read;
-    update();
-}
+
 
 function remove(b, c) {
     card_container.removeChild(c);
@@ -101,6 +108,7 @@ function remove(b, c) {
 }
 
 function add_card(book) {
+    console.log('print', book);
     if (library.filter(b => b.title == book.title).length > 0)
         return alert('Can\'t add duplicate book!');
     let card = Card(book);
@@ -109,7 +117,11 @@ function add_card(book) {
     let read  = card.querySelector('input');
     library.push(book);
     close.addEventListener('click', e => remove(book, card));
-    read.addEventListener('click',  e => toggle_read(book));
+    read.addEventListener('click',  e => {
+        book.toggle_read();
+        update();
+    }
+    );
     update();
     return true;
 }
@@ -161,23 +173,22 @@ form.addEventListener('submit', (e) => {
     let author = form.elements['author'];
     let pages = form.elements['pages'];
 
-    console.log(title.value, author.value, pages.value, form.elements['read'].value);
+    console.log(title.value, author.value, pages.value, form.elements['read'].checked);
 
     let title_valid  = has_value(title, 'insert non empty author');
     let author_valid  = has_value(author, 'insert non empty author');
     let pages_valid  = has_number(pages, 'insert a valid number (n > 0)');
 
 	if (title_valid && author_valid && pages_valid) {
-        B = new Book(title.value, author.value, Number(pages.value), form.elements['read'].value);
+        B = new Book(title.value, author.value, Number(pages.value), form.elements['read'].checked);
 		if (add_card(B) !== undefined) {
-            title.value = '';
+            title.value  = '';
             author.value = '';
-            pages.value = '';
+            pages.value  = '';
             form.elements['read'].value = false;
+            modal.style.display = "none";
         }
     }
-    else
-    document.gete
-        e.preventDefault();    
+    e.preventDefault();    
 });
 books.forEach(book => add_card(book));
